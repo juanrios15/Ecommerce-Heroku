@@ -41,7 +41,6 @@ urlpatterns_main = [
     re_path('',include('Apps.producto.urls')),
 
     
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
-+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urlpatterns_main + urlpatterns_sitemap
