@@ -15,9 +15,9 @@ ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-DATABASES['default']['NAME'] = "dbecommerce"
-DATABASES['default']['USER'] = "juanrios"
-DATABASES['default']['PASSWORD'] = "z3r4tul89"
+DATABASES['default']['NAME'] = ""
+DATABASES['default']['USER'] = ""
+DATABASES['default']['PASSWORD'] = ""
 
 # DATABASES = {
 #     'default': {
