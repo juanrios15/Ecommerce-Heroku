@@ -1,0 +1,69 @@
+{% load humanize %}
+
+<div class="col-12 border border-info rounded p-1 mb-2 resaltar">
+
+    <div class="row ">
+
+        <div class="col-12 col-md-6 d-flex justify-content-center">
+            
+            <a href="{% url 'productos_app:detalle' p.slug %}"><img src="{{p.imagen.url}}" class="d-block rounded mw-100" style="height: 200px;" /></a>
+        </div>
+
+        <div class="col-12 col-md-6 ps-md-0 mx-1 mx-md-0">
+            <div class="row" style="min-height: 50px;">
+                <a href="{% url 'productos_app:detalle' p.slug %}" class="text-decoration-none align-self-center fs-6  resaltar-letra fw-bold">{{p.nombre|truncatechars:48}}</a>
+            </div>
+            <div class="row">
+
+                <small class="text-secondary"> Publicado el {{p.created_at|date:"D d M Y"}}</small>
+            </div>
+
+            <div class="row">
+                    <div class="fs-5">
+                        Precio: <strong class="text-danger"> $ {{p.precio|intcomma}}</strong>
+                    </div>
+            </div>
+            <div class="row align-items-center">
+
+                <div class="col-6 col-md-6">
+                    <i class="far fa-eye"></i> {{p.visitas}} &nbsp;
+                </div>
+                <div class="col-6 col-md-6 text-end">
+                    {% if p.id  in favoritos%}
+    
+                    <form action="{% url 'productos_app:addfavorito' p.id %}" method="post"> {% csrf_token %}
+    
+                        <button type="submit" class="btn">
+                            <i class="fas fa-star"></i>
+                        </button>
+    
+                    </form>
+                    {% else %}
+                    
+                    <form action="{% url 'productos_app:addfavorito' p.id %}" method="post"> {% csrf_token %}
+    
+                       <button type="submit" class="btn">
+                            <i class="far fa-star"></i>
+                        </button> 
+    
+                    </form>
+                    {% endif %} 
+    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Marca: {{p.marca}} <br>
+                    <span> Categoria: {{p.categoria.nombre}}</span>
+                </div>
+                
+                
+    
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

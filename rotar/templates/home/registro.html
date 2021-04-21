@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{%load static%}
+
+{% block title %}Registro de usuario{% endblock title %}
+
+
+{% block content %}
+
+
+{% if user.username %}
+
+    <div class="container">
+
+        <h1>Ya te encuentras conectado...</h1>
+    </div>
+{% else %}
+
+<div class="container">
+    <br>
+    <div class="row mx-1">
+        <div class="col-md-2 d-none d-md-block"></div>
+        <div class="col-12 col-md-8 d-flex bg-dark text-white m-md-2 p-md-2 rounded">
+            <br>
+            <div class="row ps-2">
+                <div class="col-md-4 pt-1">
+                    <h1> Registro de Usuarios</h1>
+                </div>
+                <div class="col-md-7">
+                    <form method="post" enctype='multipart/form-data'> {% csrf_token %}
+                        <div class="row">
+                            {{form.as_p}}
+            
+                        </div>
+                    <div class="row mb-2 mx-1 mx-md-0">
+            
+                        <button type="submit" class="btn btn-success">Crear</button>
+                    </div>
+                    
+                    </form>
+                </div>
+    
+            </div>
+        
+        </div>
+    </div>
+    
+    
+</div>
+    
+{% endif %}
+    
+
+
+
+{% endblock content %}

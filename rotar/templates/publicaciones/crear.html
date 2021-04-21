@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}Nueva publicación{% endblock title %}
+
+
+{% block content %}
+    
+
+
+{% if user.is_staff %}
+<br>
+<div class="container col-md-8">
+    <h1> Nueva publicación</h1>
+    {{ form.media }}
+    <form method="post" enctype='multipart/form-data'> {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label"> Titulo </label>{{form.titulo}}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Resumen </label>{{form.resumen}}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <label class="form-label"> Etiquetas </label>{{form.etiquetas}}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Imagen </label>{{form.imagen}}
+                <br>
+                <label class="form-label fs-5 fw-bold"> Publicar? {{form.publico}} </label> 
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label"> Descripción </label>{{form.descripcion}}
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 m-2 border border-danger rounded ">
+                <div class="fs-4 py-2">Galeria de fotos</div>
+                {{ foto_formset.management_form }}
+                {% for form in  foto_formset %}
+                <div class='table'>
+                <table class='no_error'>
+                    {{form.imagen}}
+                </table>
+                </div>
+                {% endfor %}
+               <input type="button" value="Add More" id="add_more" class="btn btn-outline-success">
+                
+            </div>
+        </div>
+        
+        <div class="row"><button type="submit" class="btn btn-outline-success">Crear</button></div>
+        
+    </form>
+</div>
+
+    {% else %}
+
+    <div class="container">
+
+        <h1>Necesitas de más permisos para acceder a esta pagina</h1>
+
+    </div>
+
+    {% endif %}
+        
+
+
+{% endblock content %}

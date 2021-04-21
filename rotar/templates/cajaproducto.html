@@ -1,0 +1,66 @@
+{% load humanize %}
+
+<div class="col-12 border border-light rounded p-1 mb-2 resaltar">
+
+    <div class="row align-self-center text-center" style="min-height: 60px;">
+        <a href="{% url 'productos_app:detalle' p.slug %}" class="text-decoration-none align-self-center fs-5 text-center resaltar-letra fw-light">{{p.nombre|truncatechars:60}}</a>
+
+    </div>
+    <div class="row d-flex align-items-center mt-2">
+        <div class="d-flex justify-content-center">
+
+            <a href="{% url 'productos_app:detalle' p.slug %}"><img src="{{p.imagen.url}}" class="d-block rounded mw-100" style="height: 200px;" /></a>
+        </div>
+    </div>
+
+    <div class="col-md-10 text-secondary"><small> Publicado el {{p.created_at|date:"D d M Y"}}</small>
+
+    </div>
+
+    <div class="col-12">
+        <div class="row">
+
+
+            <div class="col-8">
+                Precio: <strong class="text-danger"> $ {{p.precio|intcomma}}</strong>
+
+            </div>
+            <div class="col-4 text-end">
+                <i class="far fa-eye"></i> {{p.visitas}} &nbsp;
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-8">
+                Marca: {{p.marca}} <br>
+                <span> Categoria: {{p.categoria.nombre}}</span>
+            </div>
+            
+            <div class="col-4 text-end">
+                {% if p.id  in favoritos%}
+
+                <form action="{% url 'productos_app:addfavorito' p.id %}" method="post"> {% csrf_token %}
+
+                    <p><button type="submit" class="btn">
+                        <i class="fas fa-star"></i>
+                    </button> </p>
+
+                </form>
+                {% else %}
+                
+                <form action="{% url 'productos_app:addfavorito' p.id %}" method="post"> {% csrf_token %}
+
+                    <p><button type="submit" class="btn">
+                        <i class="far fa-star"></i>
+                    </button> </p>
+
+                </form>
+                {% endif %} 
+
+            </div>
+
+        </div>
+    </div>
+</div>

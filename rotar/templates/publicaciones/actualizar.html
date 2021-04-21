@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}Editar publicación{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-info m-0 p-2 px-3 " role="alert">
+    <div class="container">
+
+        <div class="row d-flex justify-content-between">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+
+{% if user.username == pub.user.username %}
+<br>
+<div class="container col-md-8">
+    <h1> Editar publicación</h1>
+    {{ form.media }}
+    <form method="post" enctype='multipart/form-data' id="form1"> {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label"> Titulo </label>{{form.titulo}}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Resumen </label>{{form.resumen}}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <label class="form-label"> Etiquetas </label>{{form.etiquetas}}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label"> Imagen </label>{{form.imagen}}
+                <br>
+                <label class="form-label fs-5 fw-bold"> Publicar? {{form.publico}} </label> 
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-label"> Descripción </label>{{form.descripcion}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="fs-4 py-2">Galeria de fotos</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {% for foto in fotos %}
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{foto.id}}"><img src="{{foto.imagen.url}}" alt="" class="w-100 rounded" ></a>
+                    </div>
+                    <div class="modal fade" id="exampleModal{{foto.id}}" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{foto.imagen.url}}" alt="" class="w-100 rounded" >
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-md-6">
+                        {{foto.imagen.name}}
+                    </div>    
+                    <div class="col-md-3">
+                        <form action="{% url 'posts_app:borrarfoto' foto.id  %}" method="post" id="form2"> {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" form="form2"> <i class="far fa-trash-alt" ></i> </button>
+                        </form>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+            <div class="col-md-6 rounded ">
+            <div class="row justify-content-center">
+                    
+                    {{ foto_formset.management_form }}
+                    {% for form in  foto_formset %}
+                    <div class='table'>
+                    <table class='no_error'>
+                        {{form.imagen}}
+                    </table>
+                    </div>
+                    {% endfor %}
+                   <input type="button" value="Agregar más" id="add_more" class="btn btn-outline-success">
+                    
+                </div>
+            </div>
+                
+        </div>
+        <br>
+        
+        <div class="row"><button type="submit" class="btn btn-outline-success" form="form1">Actualizar</button></div>
+        
+    </form>
+</div>
+
+    {% else %}
+
+    <div class="container">
+
+        <h1>Necesitas de más permisos para acceder a esta pagina</h1>
+
+    </div>
+
+{% endif %}
+        
+
+
+{% endblock content %}

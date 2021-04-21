@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{%load static%}
+{% load humanize %}
+{% block title %}Perfil usuario {{usuario.username}}{% endblock title %}
+
+
+{% block content %}
+<br>
+<div class="container col-md-8 bg-light rounded">
+    <br>
+    <div class="row mb-3">
+        <div class="col-md-7">
+            <div class="fs-1">  <i class="fas fa-user-astronaut"> </i> Perfil de usuario</div>
+        </div>
+        <div class="col-md-5">
+            {% if user.id == usuario.id %}
+            <div class="row flex-row-reverse">
+                <div class="col-md-12 d-flex justify-content-end">
+
+                    <a class="btn btn-dark mx-2" href="{% url 'home_app:updateusuario' %}"> Editar Perfil</a>
+                    <a class="btn btn-dark" href="{% url 'home_app:cambiarpassword' %}"> Cambiar contraseña</a>
+
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div container>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="fs-2 m-0 p-0">Nombre: {{usuario.first_name}} {{usuario.last_name}} </div>
+                <hr class="mt-1 mb-2 p-0 text-primary">
+                <div class="row">
+                    <div class="col-md-3 pe-0">
+                        <div class="fs-5">Username</div>
+                        <div class="fs-5">Email</div>
+                        <div class="fs-5 text-secondary fst-italic">Usuario desde</div>
+                        {% if usuario.perfil.departamento %}
+                        <div class="fs-5">Departamento</div>
+                        {% endif %}
+                        {% if usuario.perfil.cargo%}
+                        <div class="fs-5">Cargo</div>
+                        {% endif %}
+                        <div class="fs-5"><i class="fab fa-linkedin"></i> Linkedin</div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="fs-5"> {{usuario.username}}</div>
+                        <div class="fs-5"> {{usuario.email}}</div>
+                        <div class="fs-5 text-secondary fst-italic"> {{usuario.date_joined|date:"d F Y"}}</div>
+                        {% if usuario.perfil.departamento %}
+                        <div class="fs-5">{{usuario.perfil.departamento}}</div>
+                        {% endif %}
+                        {% if usuario.perfil.cargo%}
+                        <div class="fs-5">{{usuario.perfil.cargo}}</div>
+                        {% endif %}
+                        
+                        {% if usuario.perfil.linkedin %}
+                            
+                        <div class="fs-5"><a href="{{usuario.perfil.linkedin}}">{{usuario.perfil.linkedin}}</a></div>
+                        {% endif %}
+                            
+
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <h5>Resumen:</h5>
+                    <div class="fs-5 fw-light lh-sm">{{usuario.perfil.bio|safe|truncatechars:200}}</div>
+                </div>
+                <br>
+            </div>
+
+            <div class="col-md-5">
+
+                {% if usuario.perfil.foto %}
+
+                <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="{{usuario.perfil.foto.url}}" alt="" class="w-100 rounded resaltar" ></a>
+
+                <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="{{usuario.perfil.foto.url}}" alt="" class="w-100 rounded" >
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% else %}
+                <img class="w-100 rounded" src="{% static 'img/no-image.png' %}" alt="">
+                
+                {% endif %}
+                {% if user.username == usuario.username %}
+                <a href="{% url 'home_app:historialcompras' %}" class="text-decoration-none fs-5 fw-light">Ver historial de compras</a>                    
+                {% endif %}
+                    
+            </div>
+
+        </div>
+
+    </div>
+
+    {% if user.username == usuario.username %}
+    <div class="row pe-2">
+        
+        <div class="col-md-6"><h1>Productos favoritos:</h1></div>
+        <div class="col-md-6 align-self-center text-end">
+            <div class="fs-5 text-primary">Total: {{page_obj.paginator.count}} </div>
+        </div>
+    </div>
+    {% if page_obj %}
+            
+        <div class="container">
+            <div class="row">
+                {% for fav in page_obj %}
+
+            <div class="col-md-4 p-2">
+                <div class="col-12 border border-info rounded p-1 resaltar">
+
+                    <div class="row align-self-center text-center" style="min-height: 60px;">
+                        <a href="{% url 'productos_app:detalle' fav.producto.slug %}" class="text-decoration-none align-self-center fs-5 text-center text-dark">{{fav.producto.nombre|truncatechars:60}}</a>
+                
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="d-flex justify-content-center">
+
+                            <a href="{% url 'productos_app:detalle' fav.producto.slug %}"><img src="{{fav.producto.imagen.url}}" class="d-block rounded mw-100" style="height: 200px;" /></a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 text-secondary"><small> Publicado el {{fav.producto.created_at|date:"D d M Y"}}</small>
+
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row">
+
+
+                            <div class="col-8">
+                                Precio: <strong class="text-danger"> $ {{fav.producto.precio|intcomma}}</strong>
+
+                            </div>
+                            <div class="col-4 text-end">
+                                <i class="far fa-eye"></i> {{fav.producto.visitas}} &nbsp;
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-md-8">
+                                Marca: {{fav.producto.marca}} <br>
+                                <span> Categoria: {{fav.producto.categoria.nombre}}</span>
+                            </div>
+                            <div class="col-md-4 text-end">
+
+                                <form action="{% url 'productos_app:addfavorito' fav.producto.id %}" method="post"> {% csrf_token %}
+
+                                    <p><button type="submit" class="btn">
+                                            <i class="fas fa-star"></i>
+                                        </button> </p>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {% endfor %}
+                
+            </div>
+            <div class="row">
+                
+            {% include 'paginacion.html' %}
+                    
+            </div>
+            <hr>
+        </div>
+
+        {% else %}
+
+        <h3 class="text-warning">Aun no tienes productos en tu lista de favoritos</h3>
+        <hr>
+        {% endif %}
+    
+    <div class="row pe-2">
+    
+        <div class="col-md-6"><h1>Ultimos comentarios:</h1></div>
+        <div class="col-md-6 align-self-center text-end">
+            <div class="fs-5 text-primary">Total: {{total_comentarios.total}} </div>
+        </div>
+    </div>
+    
+    {% if comentarios %}
+    
+    {% else %}
+
+    {% endif %}
+        
+        
+    <div class="row text-center text-primary fs-5">
+        <div class="col-md-1">Item</div>
+        <div class="col-md-2">Fecha publicado</div>
+        <div class="col-md-3">Publicación</div>
+        <div class="col-md-6">Mensaje</div>
+    </div>
+    <hr class="text-primary mb-1">
+    {% for c in comentarios %}
+     <div class="row align-items-center">
+        <div class="col-md-1 text-center">{{forloop.counter}}</div>
+        <div class="col-md-2">{{c.created_at}}</div>
+        <div class="col-md-3 ">{{c.Publicacion.titulo}}</div>
+        <div class="col-md-6">{{c.mensaje}}</div>
+        </div>   
+    
+    {% if forloop.last %}
+        
+    {% else %}
+    <hr class="text-primary m-1">
+
+    {% endif %}
+        
+    {% endfor %}
+
+
+    {% endif %}
+
+</div>
+<br>
+
+
+
+
+{% endblock content %}

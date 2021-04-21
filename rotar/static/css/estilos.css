@@ -1,0 +1,38 @@
+#cke_id_bio,
+#cke_id_descripcion,
+.django-ckeditor-widget
+{
+    width: 100% !important;
+}
+
+
+
+.resaltar:hover {
+    box-shadow: 4px 4px 4px grey;
+    transform: scale(1.04);
+}
+
+.resaltar-letra:hover{
+    color: #333;
+    text-shadow: 2px 2px 6px #777;
+}
+
+
+@media (max-width: 600px) {
+    .letrapequena {
+      font-size: 0.8rem;
+    }
+    .letrasuperpequena {
+      font-size: 0.7rem;
+    }
+    .pequenosize {
+        height: 300px;
+    }
+  }
+@media (min-width: 601px) {
+
+    .normalsize {
+        height: 400px;
+    }
+  }
+

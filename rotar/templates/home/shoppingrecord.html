@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{%load static%}
+{% load humanize %}
+{% block title %}Pagina inicio {% endblock title %}
+
+{% block content %}
+
+
+{% if user.username %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="fs-1 fw-light">Historial de compras</div>
+        </div>
+        <div class="col-md-4 text-end">
+            <img src="{% static 'img/logo.ico' %}" class="img-fluid" style="height: 70px;">
+        </div>
+    </div>
+    <hr>
+    <div class="container bg-dark text-white rounded">
+        <div class="row text-center fs-4 py-2">
+            <div class="col-md-5">Producto</div>
+            <div class="col-md-1">Precio</div>
+            <div class="col-md-1">Cantidad</div>
+            <div class="col-md-2">Subtotal</div>
+            <div class="col-md-1 p-0">Venta ID</div>
+            <div class="col-md-2">Fecha compra</div>
+        </div>
+        {% for detalle in record  %}
+            <div class="row my-1 align-items-center">
+                <div class="col-md-2 px-3 py-2">
+                    {% if detalle.producto.imagen.url %}
+                        <img src="{{detalle.producto.imagen.url}}" class="d-block w-100 rounded" style="max-height: 120px;">
+                                        
+                    {% else %}
+                        <img src="{% static 'img/no-image.png' %}" class="d-block w-100 rounded" style="max-height: 120px;">
+                    {% endif %}
+                </div>
+                <div class="col-md-3">
+                    {{detalle.producto.nombre|truncatechars:70}}
+                </div>
+                <div class="col-md-1 text-center">
+                    $ {{detalle.producto.precio|intcomma}}
+                </div>
+                <div class="col-md-1 text-center">
+                    {{detalle.cantidad}}
+                </div>
+                <div class="col-md-2 text-center">
+                    $ {{detalle.subtotal|intcomma}}
+                </div>
+                <div class="col-md-1 text-center">
+                    {{detalle.venta.id}}
+                </div>
+                <div class="col-md-2 text-center">
+                    {{detalle.venta.fecha_venta|date:"D d M Y H:m"}}
+                </div>
+                    
+
+            </div>
+        {% endfor %}
+
+    </div>
+    
+
+    
+    
+        
+
+</div>
+
+
+{% else %}
+
+
+<div class="container">No hay nada para ver aqui</div>
+    
+{% endif %}
+    
+
+    
+{% endblock content %}
+    

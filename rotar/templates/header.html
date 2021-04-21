@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      
+      <a class="navbar-brand p-0 m-0" href="{% url 'home_app:inicio' %}"><img src="{% static 'img/logoblanco.png' %}" style="width: 60px;"></a>
+      
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            {% if request.path == '/' %}
+            <a class="nav-link active" aria-current="page" href="{% url 'home_app:inicio' %}">Inicio</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'home_app:inicio' %}">Inicio</a>
+            {% endif %}
+          </li>
+          <li class="nav-item">
+            {% if request.path == '/productos' %}
+            <a class="nav-link active" aria-current="page" href="{% url 'productos_app:productos' %}">Productos</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'productos_app:productos' %}">Productos</a>
+            
+            {% endif %}
+          </li>
+          <li class="nav-item">
+            {% if request.path == '/publicaciones' %}
+            <a class="nav-link active" aria-current="page" href="{% url 'posts_app:publicaciones' %} ">Publicaciones</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'posts_app:publicaciones' %} ">Publicaciones</a>
+
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+      <span class="navbar-text">
+        {% if user.username %}
+
+        <a class="text-decoration-none text-white fw-lighter" href="{% url 'home_app:detalleusuario' user.slug %} "> <i class="fas fa-user-astronaut"> </i> Mi perfil</a> &nbsp;
+        <a class="text-decoration-none text-white fw-lighter" href="{% url 'home_app:logoutusuario' %} "> <i class="fas fa-sign-out-alt"> </i> Salir </a> &nbsp;
+
+        {%else%}
+
+        <a class="text-decoration-none text-white fw-lighter" href="{% url 'home_app:registrousuario' %} "><i class="fas fa-tasks"> </i> Registro</a>
+        <a class="text-decoration-none text-white fw-lighter" href="{% url 'home_app:loginusuario' %} "><i class="fas fa-user-astronaut"> </i> Ingreso </a>
+
+        {% endif %}
+
+        <a type="submit" class="btn m-0 position-relative p-0" href="{% url 'productos_app:carrito' %}">
+          <i class="fas fa-shopping-cart fa-lg"></i>
+          <span style="font-size: 0.6rem;" class="badge bg-danger position-absolute translate-middle">
+            {{cantidad_carrito}}
+          </span>
+        </a>
+
+      </span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        
+      </button>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-lg navbar-secondary bg-secondary d-flex justify-content-evenly text-white p-1">
+    
+    {% for c in categorias_nombres %}
+      <a class="text-decoration-none text-white" href="{% url 'productos_app:productos'  %}?categoria={{c.0}}"> {{c.0}} &nbsp;</a>
+    {% endfor %}
+      
+
+
+  </nav>
+  
+</div>

@@ -1,0 +1,96 @@
+
+
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}Login - Inicio de sesión{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert" style="margin: 0;">
+        {{message}}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+
+    
+{% if user.username %}
+
+    <div class="container">
+
+        <h1>Ya te encuentras conectado...</h1>
+    </div>
+{% else %}
+
+<div class="container">
+    <br>
+    <div class="row mx-1">
+        <div class="col-md-3 d-none d-md-block"></div>
+
+        <div class="col-12 col-md-6 bg-dark text-white rounded m-md-2">
+            <div>
+                <div class="row">
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Nombre de usuario o contraseña incorrectos
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                </div>
+                
+            </div>
+            <br>
+            <div class="row pe-md-3">
+                
+                <div class="col-md-4 ">
+                    <div class="row">
+        
+                        <h1><i class="fas fa-user-astronaut"> </i> Login</h1>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7">
+                        
+            
+                    <form method="post" enctype='multipart/form-data'> {% csrf_token %}
+                        <div class="mb-2 mx-2">
+                            <div class="row">
+                                    <label for="id_username">Nombre de usuario</label>
+                                    <input type="text" class="form-control" name="username" id="id_username" maxlength="150" required>
+                            </div>
+                        </div>
+                        <div class="mb-2 mx-2">
+                            <div class="row">
+                                <label for="id_password">Contraseña</label>
+                                <input type="password" class="form-control" name="password" id="id_password"required>
+        
+                            </div>
+                        </div>
+                        <br>
+                        <div class="mx-2">
+                            <div class="row">
+                                <button type="submit" class="btn btn-success">Ingresar</button>
+                            </div>
+                        </div>
+                    
+                    </form>
+            
+                </div>
+            </div>
+            <br>
+            
+        </div>
+
+        
+    </div>
+    
+</div>
+    
+{% endif %}
+
+
+{% endblock content %}
+
+

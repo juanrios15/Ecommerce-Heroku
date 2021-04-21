@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}Publicaciones {% endblock title %}
+
+
+{% block content %}
+
+<div class="container col-md-10">
+
+    <br>
+    
+    <!-- <p> Comentarios por Usuario utilizando el values (group_by):  </p>
+    {% for x in comments %}
+        <p> {{x.nombre}} : {{x.cuenta}} </p> 
+    {% endfor %}
+     -->
+     <div class="row d-flex">
+
+        {% if user.is_staff %}
+            <div class="row justify-content-end">
+                <div class="col-md-3 text-end p-0">
+                    <a href="{% url 'posts_app:newpost' %}" class="btn btn-dark">Crear nueva publicación</a>
+                </div>
+            </div>
+        {% endif %}
+            
+         <div class="col-md-3">
+            <div class="fs-1"> <i class="fas fa-meteor"></i> Publicaciones</div>
+            <br>
+             <div class="row">
+                 <form class="d-flex" method="GET"> {% csrf_token %}
+                     <input class="form-control me-1" type="text" id="kword" name="kword" placeholder="Buscar ...">
+                     <button class="btn btn-outline-success" type="submit">Search</button>
+                 </form>
+
+             </div>
+             <br>
+
+             <div class="row d-md-none">
+                 <div class="col-12">
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Categorias
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="?etiqueta=todos" 
+                                {% if etiqueta == 'todos' %}
+                                    class="list-group-item list-group-item-action active"
+                                {% else %}
+                                    class="list-group-item list-group-item-action"
+            
+                                {% endif %}
+                                >Todos</a></li>
+                            {% for e in etiquetas  %}
+                                <li><a href="?etiqueta={{e.nombre}}" 
+                                    {% if etiqueta == e.nombre %}
+                                        class="list-group-item list-group-item-action active"
+                                    {% else %}
+                                        class="list-group-item list-group-item-action"
+            
+                                    {% endif %}
+                                    >{{e.nombre}}</a></li>
+                             {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Ordenar por
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% if etiqueta %}
+                            <li><a href="?etiqueta={{etiqueta}}&orden=visitas" 
+                                {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más Vistos</a></li>
+                            <li><a href="?etiqueta={{etiqueta}}&orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más antiguos primero</a></li>
+                            <li><a href="?etiqueta={{etiqueta}}&orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más nuevos</a></li>
+                            
+                            {% elif kword %}
+                            <li><a href="?kword={{kword}}&orden=visitas" {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más Vistos</a></li>
+                            <li><a href="?kword={{kword}}&orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más antiguos primero</a></li>
+                            <li><a href="?kword={{kword}}&orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más nuevos</a></li>
+                            
+                            {% else %}
+                            <li><a href="?orden=visitas" {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más Vistos</a></li>
+                            <li><a href="?orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más antiguos primero</a></li>
+                            <li><a href="?orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más nuevos</a></li>
+                            {% endif %}
+                        </ul>
+                      </div>
+                 </div>
+             </div>
+                
+                 <h4 class="d-none d-md-block">Etiquetas</h4>
+                 <div class="list-group d-none d-md-block" id="list-tab" role="tablist">
+                    <a href="?etiqueta=todos" 
+                    {% if etiqueta == 'todos' %}
+                        class="list-group-item list-group-item-action active"
+                    {% else %}
+                        class="list-group-item list-group-item-action"
+
+                    {% endif %}
+                    >Todos</a>
+
+                     {% for e in etiquetas  %}
+                        <a href="?etiqueta={{e.nombre}}" 
+                        {% if etiqueta == e.nombre %}
+                            class="list-group-item list-group-item-action active"
+                        {% else %}
+                            class="list-group-item list-group-item-action"
+
+                        {% endif %}
+                        >{{e.nombre}}</a>
+                     {% endfor %}
+                     
+                 </div>
+                 <br class="d-none d-md-block">
+                 <h4 class="d-none d-md-block">Ordenar por:</h4>
+                 
+                 <div class="list-group d-none d-md-block">
+                    {% if etiqueta %}
+                    <a href="?etiqueta={{etiqueta}}&orden=visitas" 
+                    {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más Vistos</a>
+                    <a href="?etiqueta={{etiqueta}}&orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más antiguos primero</a>
+                    <a href="?etiqueta={{etiqueta}}&orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más nuevos</a>
+                    
+                    {% elif kword %}
+                    <a href="?kword={{kword}}&orden=visitas" {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más Vistos</a>
+                    <a href="?kword={{kword}}&orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más antiguos primero</a>
+                    <a href="?kword={{kword}}&orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %}>Más nuevos</a>
+                    
+                    {% else %}
+                    <a href="?orden=visitas" {% if orden == 'visitas' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más Vistos</a>
+                    <a href="?orden=antiguos" {% if orden == 'antiguos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más antiguos primero</a>
+                    <a href="?orden=nuevos" {% if orden == 'nuevos' %} class="list-group-item list-group-item-action active" {% else %}  class="list-group-item list-group-item-action"{% endif %} >Más nuevos</a>
+                    {% endif %}
+                </div>
+            </div>
+                 
+                 
+         <div class="col-md-9 py-3">
+             
+            <div class="ps-md-4">
+
+                {% if kword %}
+                    <h3 class="text-primary">Busqueda por palabra clave: {{kword}}</h3>
+                {% endif %}
+                    
+                <div class="row align-items-center">
+                    <div class="col-md-9">
+                        <h2 class="text-secondary">Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de {{ page_obj.paginator.count }} publicaciones</h2>
+                    </div>
+                    <div class="col-md-3 text-end d-none d-md-block">
+                        <img src="{% static 'img/logo.ico' %}" class="img-fluid" style="height: 70px;">
+                    </div>
+                </div>
+                <hr class="my-1">
+                {% for p in publicaciones %}
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        <a href="{% url 'posts_app:detallepost' p.slug %}" class="text-decoration-none text-dark resaltar-letra fs-1">{{p.titulo}}</a> 
+                        <a href="{% url 'posts_app:detallepost' p.slug %}"><img src="{{p.imagen.url}}" class="d-block w-100 rounded mt-2" /></a>
+                    </div>
+            
+                    <div class="col-md-12 py-0 mb-0">
+                        <div class="container">
+                            <div class="row d-flex align-items-center">
+                                <div class="container col-md-6">
+                                    <div class="row d-flex align-items-center">
+ 
+                                        <div class="col-3 col-md-2 bg-success px-0">
+                                            {% if p.user.perfil.foto %}
+                                            <img src="{{p.user.perfil.foto.url}}" class="d-block w-100 rounded" style="min-height: 60px;">
+                                            
+                                            {% else %}
+                                            <img src="{% static 'img/no-image.png' %}" class="d-block w-100 rounded">
+                                            {% endif %}
+                                        </div>
+                        
+                                        <div class="col-9 col-md-10 letrapequena py-1">
+                                             Publicado por: <a href="{% url 'home_app:detalleusuario' p.user.slug %}" class="text-decoration-none fst-italic text-primary "> {{p.user.username}} </a><br />
+                                             Publicado el: <span class="text-secondary fst-italic">{{p.created_at}} </span>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 offset-md-5 d-none d-md-block">
+                                 <div class="row d-flex align-items-center text-end">
+                                     
+                                    <table>
+                                        <tr>
+                                            <td> <span class="fs-4"><i class="fas fa-eye"></i></span></td>
+                                            <td><span class="fs-5">{{p.visitas}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="fs-4"><i class="fas fa-comments"></i></span></td>
+                                            <td><span class="fs-5">{{p.comments_count}}</span></td>
+                                        </tr>
+                                    </table>
+                                 </div>
+                                 
+                                </div>
+                                <div class="row d-flex p-0 m-0 d-sm-none">
+                                    <div class="col-6 text-center">
+                                        <span class="fs-4"><i class="fas fa-eye"></i></span>
+                                        <span class="fs-5">{{p.visitas}}</span>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span class="fs-4"><i class="fas fa-comments"></i></span>
+                                            <span class="fs-5">{{p.comments_count}}</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row px-0 mb-2">
+                                <div class="fs-5 px-0">Resumen: <span class="fs-6 fw-light">{{p.resumen}}</span>
+
+                                </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <span class="fs-5">Etiquetas: </span>
+                                    {% for e in p.etiquetas.all %}
+                                        <span class="badge rounded-pill bg-success letrapequena">{{e.nombre}}</span>
+                                    {% endfor %}
+                                </div>
+                                
+                            </div>
+                            
+                
+                
+                            <!-- {{p.etiquetas.count}} -->
+                            
+                            <br>
+                            <!-- <p>Fotos: {{p.fotos_count}}</p> -->
+                            
+                        </div>
+                        <a class="btn btn-dark w-100 " href="{% url 'posts_app:detallepost' p.slug %}"> Detalle </a>
+             
+                        </div>
+                        
+                    </div>
+                    <br>
+                    
+                    {% if forloop.last %}
+                    {% else %}
+                    <hr>
+                    {% endif %}
+                        
+                    {% endfor %}
+            </div>
+            {% include 'paginacion.html' %}
+             </div>
+
+        </div>
+
+    </div>
+    
+
+
+
+
+
+
+
+
+
+{% endblock content %}

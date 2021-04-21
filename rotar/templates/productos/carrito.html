@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% load humanize %}
+{% block title %}Carrito de compras{% endblock title %}
+
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-8"><h1>  <i class="fas fa-cart-arrow-down"></i> Carrito de compras</h1></div>
+                <div class="col-md-4 d-flex justify-content-end my-3">
+                    <form action="{% url 'productos_app:borrardelcarrito' 'BorrarTodo' %}" method="post"> {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"> Borrar todo el carrito </button>
+                    </form>
+                </div>
+            </div>
+            {% if page_obj %}
+                                
+                            <div class="col-md-9">
+                                <div class="text-secondary fw-light fs-5">Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de {{ page_obj.paginator.count }} productos</div>
+                            </div>
+            {% endif %}
+            <div class="row border border-info rounded">
+
+                <div class="row text-center p-md-0 m-md-0 align-items-center">
+                    <h6 class="col-5 col-md-5 text-primary letrapequena">Nombre del producto</h6>
+                    <h6 class="col-2 col-md-2 text-primary letrapequena">Precio</h6>
+                    <h6 class="col-2 col-md-2 text-primary letrapequena">Cant</h6>
+                    <h6 class="col-2 col-md-2 text-primary letrapequena">Subtotal</h6>
+    
+                </div>
+                <br>
+                <br>
+                
+                
+                {% for x,y,z,a,b in page_obj %}  
+                <div class="row align-items-center my-2 p-md-0 m-md-0 ">
+    
+                        <div class="col-md-2 d-none d-md-block">
+                            {% if x.imagen.url %}
+                                <img src="{{x.imagen.url}}" class="d-block w-100 rounded" style="max-height: 80px;">
+                                                
+                            {% else %}
+                                <img src="{% static 'img/no-image.png' %}" class="d-block w-100 rounded" style="max-height: 70px;">
+                            {% endif %}
+                        </div>
+                        <div class="col-5 col-md-3 px-md-1 letrapequena">
+                            <div class="row d-md-none">
+                                {% if x.imagen.url %}
+                                <img src="{{x.imagen.url}}" class="d-block w-100 rounded" style="max-height: 80px;">
+                                                
+                                {% else %}
+                                <img src="{% static 'img/no-image.png' %}" class="d-block w-100 rounded" style="max-height: 70px;">
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                {{x.nombre|truncatechars:50}}
+
+                            </div>
+                            <div class="row">
+                                {% if a.color != 'None' %}
+                                    <small class="text-secondary">Color: {{a.color}} </small>       
+                                {% endif %}
+                                    
+                                {% if a.talla != 'None' %}
+                                <small class="text-secondary">Talla: {{a.talla}}  </small>
+                                    
+                                {% endif %}
+                            </div>
+
+                        </div>
+                        <div class="col-2 text-center px-0 letrapequena">
+                            {{x.precio|intcomma}}
+                        </div>
+                        <div class="col-2 text-center px-0 letrapequena">
+                            {{y}}
+                        </div>
+                        <div class="col-2 text-center px-0 letrapequena">
+                            {{z|intcomma}} 
+
+                        </div>
+                        <div class="col-1">
+                            
+                            <form action="{% url 'productos_app:borrardelcarrito' b  %}" method="post"> {% csrf_token %}
+                                <button type="submit" class="btn btn-danger p-0 p-md-1"> <i class="far fa-trash-alt"></i> </button>
+                            </form>
+                        </div>
+                
+                    </div>
+                            
+                        {% empty %}
+                        <br>
+                        <div class="text-center text-secondary mb-3 fs-3 fw-light">Aun no tienes productos en el carrito</div>
+
+                    {% endfor %}
+                    <div class="row my-0">
+                        
+                        {% include 'paginacion.html' %}
+                        
+                                
+                        </div>
+                    
+                        
+            </div>
+
+        <div class="row d-flex text-end">
+            
+            <div class="col-md-12">
+                <div class="fs-3 justify-content-end fw-light">Subtotal: <span class="text-primary">$ {{subtotal|intcomma}} </span></div>
+            </div>
+            <div class="col-md-12">
+                
+                {% if descontado %}
+                <div class="fs-5 justify-content-end fw-light">Costos de envio: <span class="text-secondary text-decoration-line-through fst-italic">$ {{descontado|intcomma}}  </span> <span class="text-primary">$ {{costo_envio|intcomma}} </span> </div> 
+
+                {% else %}
+                <div class="fs-5 justify-content-end fw-light">Costos de envio: <span class="text-primary">$ {{costo_envio|intcomma}} </span> </div> 
+                    
+                {% endif %}
+                    
+            </div>
+            <div class="col-md-12">
+                <div class="fs-2 justify-content-end">Total a pagar: <span class="text-primary">$ {{total|intcomma}}</span></div> 
+            </div>
+        </div>   
+        <br>
+        <div class="row mx-1 d-none d-md-block">
+            <div class="row mb-3">
+                <h1> <i class="fas fa-meteor"></i> Productos populares</h1>
+            </div>
+            <div class="row mx-0 px-1">
+                {% for p in populares %}
+                <div class="col-md-6 px-2">
+                    {% include 'cajaproducto.html' %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>         
+
+        </div>
+        <div class="col-md-5">
+            <div class="row border border-info rounded mx-2 p-1 justify-content-center">
+                <div class="container p-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-1">
+                            <h2 class="text-success p-2 text-center"><i class="fas fa-credit-card"></i></h2>
+                        </div>
+                        <div class="col-md-11">
+    
+                            <h2 class="text-success p-2 text-center">Llene los siguientes datos para finalizar su compra:</h2>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <form method="post"> {% csrf_token %}
+                        {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ error|escape }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                        {% endfor %}
+                    {% endif %}
+                        <div class="mb-2">
+                            <label for="id_nombre" class="form-label">{{form.nombre.label}}: </label>
+                            <input class="form-control mb-1" type="text" placeholder="Nombre" name="nombre" id= "id_nombre" value="{{user.first_name}}">
+                            {% if form.nombre.errors %}
+                            {% for error in form.nombre.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-2"> 
+                                
+                            <label for="id_apellido" class="form-label">{{form.apellido.label}}: </label>
+                            <input class="form-control mb-1" type="text" placeholder="Apellidos" name="apellido" id= "id_apellido" value="{{user.last_name}}">
+                            {% if form.apellido.errors %}
+                            {% for error in form.apellido.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-2"> 
+                            <label for="id_email" class="form-label">{{form.email.label}}: </label>
+                            <input class="form-control mb-1" type="email" placeholder="ejemplo@mail.com" name="email" id= "id_email" value="{{user.email}}">
+                            {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-2"> 
+                            <label for="id_direccion" class="form-label">{{form.direccion.label}}: </label>
+                            <textarea class="form-control mb-1" rows="2" type="text" placeholder="Calle 01 #99-99 Apto 111 Torre 1.." name="direccion" id= "id_direccion"></textarea>
+                            {% if form.direccion.errors %}
+                            {% for error in form.direccion.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-2"> 
+                            <label for="id_ciudad" class="form-label">{{form.ciudad.label}}: </label>
+                            <input class="form-control mb-1" type="text" placeholder="Ciudad" name="ciudad" id= "id_ciudad">
+                            {% if form.ciudad.errors %}
+                            {% for error in form.ciudad.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-2"> 
+                            <label for="id_departamento" class="form-label">{{form.departamento.label}}: </label>
+                            <input class="form-control mb-1" type="text" placeholder="Departamento" name="departamento" id= "id_departamento">
+                            {% if form.departamento.errors %}
+                            {% for error in form.departamento.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="mb-2"> 
+                            <label for="id_celular" class="form-label">{{form.celular.label}}: </label>
+                            <input class="form-control mb-1" type="text" placeholder="Ejemplo: 310 000 1234" name="celular" id= "id_celular">
+                            {% if form.celular.errors %}
+                            {% for error in form.celular.errors %}
+                            <div class="row">
+                                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close p-1 mt-3" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <label class="form-label">Seleccione la forma de pago: </label>
+
+                        <div class="row justify-content-center">
+
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="radio" name="forma_pago" id="flexRadioDefault1" value="PSE">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                  PSE
+                                </label>
+                              </div>
+                              <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="radio" name="forma_pago" id="flexRadioDefault2" value="MercadoPago" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                  MercadoPago
+                                </label>
+                            </div>               
+                        </div>
+                        
+                        <br>
+                        
+                            <button type="submit" class="btn btn-danger w-100 mb-2">
+                                Ir a pagar
+                            </button>
+                            <br>
+                        
+                    </form>
+                </div>
+                
+            </div>
+            <br>
+
+        </div>
+    
+
+    </div>
+</div>
+
+
+
+{% endblock content %}
+

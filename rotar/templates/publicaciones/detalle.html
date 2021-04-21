@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{%load static%}
+{% load humanize %}
+{% block title %}Publicación {{publicacion.titulo}}{% endblock title %}
+
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-info m-0 p-2 px-3 " role="alert">
+    <div class="container">
+
+        <div class="row d-flex justify-content-between">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9 bg-light rounded">
+            <br>
+            <div class="row text-center py-2">
+                <h1>{{publicacion.titulo}}</h1>
+            </div>
+            <br>
+            <div class="row px-2">
+                <div class="col-md-6">
+                    <div class="fs-4">Resumen: {{publicacion.resumen}} </div>
+                    <hr class="mt-1 mb-2 p-0 text-primary">
+                    <div class="row">
+                        <div class="col-md-4 pe-0">
+                            
+                            <div class="fs-5 text-secondary fst-italic">Publicado</div>
+                            <div class="fs-5">Publicado por</div>
+                            <div class="fs-5">Visitas</div>
+                            <div class="fs-5">Fotos</div>
+                            <div class="fs-5">Comentarios</div>
+                            <div class="fs-5">Etiquetas</div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="fs-5 text-secondary fst-italic"> {{publicacion.created_at}}</div>
+                            <div class="fs-5"> {{publicacion.user.username}}</div>
+                            <div class="fs-5"> {{publicacion.visitas}}</div>
+                            <div class="fs-5"> {{galeria|length}}</div>
+                            <div class="fs-5"> {{comentarios|length}}</div>
+                            <div class="fs-5">
+                                {% for et in publicacion.etiquetas.all %}
+                                <span class="badge rounded-pill bg-primary fs-6">{{et.nombre}}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        {% if user.username == publicacion.user.username %}
+                            <a href="{% url 'posts_app:editpost' publicacion.slug %}" class="text-decoration-none fs-4">Editar publicación </a>
+                        {% endif %}
+                            
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% if publicacion.video %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+        
+                                <video controls autoplay class="d-block w-100 rounded">
+                                    <source src="{{publicacion.video.url}}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a role="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{publicacion.id}}"><img src="{{publicacion.imagen.url}}" alt="" class="w-100 rounded" ></a>
+                    <div class="modal fade" id="exampleModal{{publicacion.id}}" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{publicacion.imagen.url}}" alt="" class="w-100 rounded" >
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+            <div class="row px-2">
+                <div class="fs-5">
+                    {{publicacion.descripcion|safe}}
+                </div>
+        
+            </div>
+            <br>
+        
+            <div class="row">
+        
+                <div class="col-md-6">
+                    <div class="fs-1 fw-light text-center">Galeria de fotos</div>
+                    <br>
+                    {% if galeria %}
+        
+                    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for foto in galeria %}
+        
+                            {% if forloop.first %}
+                            <div class="carousel-item active">
+                                <img src="{{foto.imagen.url}}" class="d-block w-100 rounded" alt="..." style="height: 400px;">
+                            </div>
+        
+                            {% else %}
+                            <div class="carousel-item">
+                                <img src="{{foto.imagen.url}}" class="d-block w-100 rounded" alt="..." style="height: 400px;">
+                            </div>
+        
+                            {% endif %}
+        
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="fs-1 fw-light text-center">Comentarios</div>
+                    <br>
+                    <div class="row d-flex justify-content-center">
+                        <div class="container px-0 overflow-auto" style="max-height: 400px;">
+                            {% for comen in comentarios %}
+                            <div class="row border border-primary rounded align-items-center p-1 m-1">
+                                <div class="col-md-2 justify-content-center">
+                                    {% if comen.user.perfil.foto %}
+                                    <img src="{{comen.user.perfil.foto.url}}" class="d-block w-100 rounded">
+        
+                                    {% else %}
+                                    <img src="{% static 'img/no-image.png' %}" class="d-block w-100 rounded">
+                                    {% endif %}
+                                    <small class="text-success text-start">{{comen.user.username}}</small>
+                                    
+                                </div>
+                                <div class="col-md-2 text-secondary pe-1 lh-1">
+                                    <small style="font-size: 0.8rem;"> {{comen.created_at|timesince}} </small>
+                                </div>
+                                
+                                <div class="col-md-8">
+                                    <div class="fs-6 fw-light" >{{comen.mensaje}}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if user.username %}
+                    <br>
+                    <div class="row">
+                        <form method="post" enctype='multipart/form-data'> {% csrf_token %}
+                            <div class="row">
+        
+                                <div class="col-md-9 p-1">
+                
+                                        <textarea name="mensaje" id="id_mensaje" class="form-control" placeholder="Deje su comentario aqui..." rows="2"></textarea>
+                                </div>
+                                <div class="col-md-3 d-flex">
+                                        
+                                    <button type="submit" class="btn btn-outline-success flex-fill">Comentar</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    {% endif %}
+                <br>
+                </div>
+            </div>
+        
+        </div>
+                
+        <div class="container col-md-3">
+            <div class="row bg-dark rounded align-items-center mb-2 mx-1">
+                <div class="col-md-3">
+                    <div class="fs-2">
+                        <img src="{% static 'img/logoblanco.png' %}" alt="" class="w-100 d-block">
+                    </div>
+                </div>
+                <div class="col-md-9 p-0">
+                    <div class="fs-2 text-center bg-dark rounded text-white my-1 lh-sm">Productos recomendados</div>
+                </div>
+            </div>
+            <div class="row mx-1">
+                
+                {% for p in productos  %}
+                    {% include 'cajaproducto.html' %}
+
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<br>
+
+
+
+
+{% endblock content %}

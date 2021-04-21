@@ -1,0 +1,105 @@
+ORDEN
+
+LISTO ----- Modelo de usuario
+LISTO ---- Detalle de usuario
+LISTO ---- Modelo de publicaciones
+LISTO ---- Detalle de la publicación
+LISTO ---- Agregar video a las publicaciones, que solo se pueda elegir una de las dos opciones o en su defecto solo mostrar una de ellas. En detalle
+ tal vez si se podrian mostrar ambos
+LISTO ---- En el detalle se pueden ver y agregar comentarios
+LISTO ---- Filtros en la pagina de publicaciones
+LISTO ---- Barra de busqueda
+LISTO ---- PERFILES DE USUARIO. Si no se está registrado, se va a poder ver el perfil del usuario, pero con muy poca información.
+LISTO ---- Crear un nuevo modelo de producto
+LISTO ---- Crear un nuevo modelo para categoria de productos
+LISTO ---- Definir por defecto una fotografia para todos los nuevos usuarios
+LISTO ---- PERFILES DE USUARIO. Mostrar las publicaciones de un usuario junto con el detalle de ese usuario, solo si se es usuario registrado.
+LISTO ---- Crear un modelo para carrito de mercado, que debe funcionar en una sola sesion
+LISTO ---- Boton de agregar al carrito para cada uno de los productos
+LISTO ---- Visualizar el carrito
+LISTO ---- Crear modelo de venta y detalleventa para realizar la compra
+LISTO ---- Borrar todo lo que esta en el carrito
+LISTO ---- Agregar a favoritos, solo para usuarios conectados. Unique together para que no le pueda dar like mas de una vez
+LISTO ---- Validaciones y messages mas bonitos para cuando se diligencia el formulario de venta 
+        LISTO ---- mensaje para login
+        LISTO ---- mensaje para registro
+        LISTO ---- mensaje para logout
+        LISTO ---- mensajes para la venta
+LISTO ---- Las personas que estan loggeadas pueden ver dentro del perfil del usuario, la cantidad total de publicaciones y de comentarios.
+LISTO ---- Mostrar subtotal, costos de envio y luego total
+LISTO ---- Agregar la pagina de historial de compras del usuario, loginrequiredmixin y ademas solo visible adentro por el dueño de la cuenta
+LISTO ---- Darle funcionalidad al boton de whatsapp
+LISTO ---- Si un usuario elimina su usuario, se elimina la informacion de su venta, no deberia ser asi
+LISTO ---- Mensaje de exito cuando se finaliza la compra, informando que le estara llegando un correo electronico de confirmación
+LISTO ---- No esta la opcion de editar el linkedin del usuario
+LISTO ---- Aparece costo de envio cuando aun no hay productos en el canasto
+LISTO ---- Mejorar todas las vistas, busquedas y filtros de las tablas de admin
+
+4. Se debe enviar correo electronico al finalizar la compra, tanto al cliente como a la empresa para confirmar la venta
+5. Elaborar la pagina de servicios y contacto
+4. Dejar hechas las views de las paginas politicas de uso, info legal y filosofia organizacional
+3. Formulario de contacto 
+17. Arreglar usando javascript la forma en como se hacen los if para definir cual es el boton activo
+
+
+FRONTEND
+LISTO ---- Realizar el navbar de toda la pagina
+LISTO ---- Titulos de las paginas estan mal
+LISTO ---- Mostrar la galeria de fotos de la publicacion y de productos con un carousel
+LISTO ---- Pagina de inicio: Agregar el carrito al navbar
+LISTO ---- Productos: Mostrar las categorias de una forma mas atractiva.. en la parte de arriba de la pantalla, para que sea el filtro principal
+LISTO ----Total de productos tipo paginación mas pegado al listado de productos
+LISTO ---- Detalle producto: con un carousel mostrar las imagenes del producto a la derecha de la pagina
+LISTO ---- Detalle producto: Debajo del carousel incluir cantidad, color (si lo requiere), talla(si lo requiere) y boton de agregar al carrito
+LISTO ----  En la pagina inicial mostrar las ultimas publicaciones con un carousel que parece cards
+LISTO ----  Pagina de inicio debe tener ajustada en la parte de arriba la barra de navegacion
+LISTO ----  Pagina de inicio Carousel inicial 
+LISTO ----  Pagina de inicio Carousel tipo cards para mostrar los ultimos productos subidos
+LISTO ----  Pagina de inicio Carousel tipo cards para mostrar los productos mas populares
+LISTO ----  Pagina de inicio Mostrar las ultimas 3 publicaciones realizadas
+LISTO ----  Pagina de inicio Footer
+LISTO ---- Lista de Productos y publicaciones: Agregar la paginación
+LISTO ----  Detalle producto: Debajo del detalle del producto debe haber 3 elementos similares a este (misma categoria podria ser)
+LISTO ----  El registro, login y logout deben tener success message...
+LISTO ---- Pagina de editar perfil tiene que verse mucho mejor, tambien debe tener un boton para eliminar el perfil
+LISTO ---- Login required mixin para crear nuevas publicaciones y editarlos, solo puede editar quien lo crea
+LISTO ---- Los mensajes al hacer login no exitoso se ven muy mal
+LISTO ---- Al darle clic a la foto o titulo de la publicacion deberia dirigir a esta
+LISTO ---- La altura de las imagenes en el detalle de los productos cambia
+LISTO ---- pagina activa en la barra de navegacion
+LISTO ---- Hover para varios elementos (principalmente para los anchor)
+LISTO ---- Dropdown para los filtros en las busquedas
+
+14. Acomodar el footer en la pagina de login y en la de actualizacion de contraseña
+17. Revision de todas las vistas en diferentes pantallas
+        Para movil esta pendiente:
+                cambiar password
+                detalle usuario
+                shopping record
+                update
+                actualizar publicacion
+                crear publicacion
+                detalle publicacion
+        Para SM MD y LG estan pendientes todas las vistas
+
+BACKEND
+
+LISTO ---- Productos: Incluir entre las categorias: TODOS, para mostrar todos los productos...
+LISTO ---- Productos: Incluir los botones de ordenar por (precio, alfabetico, popularidad) y busqueda, ambos vinculados a un solo boton
+LISTO ---- Detalle producto: Agregar al modelo de producto, los campos de talla y color
+LISTO ---- Detalle producto: Mostrar las opciones de color y talla solo si el producto cuenta con esa caracteristica.
+LISTO ---- Detalle producto: Esta informacion debe ser enviada tambien al carrito de compras para cuando se vaya a realizar la venta...
+LISTO ----  El carrito de compras debe tener recomendaciones de productos de forma horizontal
+LISTO ----  El detalle del producto incluye tambien recomendaciones de productos de forma horizontal
+LISTO ----  Hacer un solo html para vista horizontal de prooductos
+LISTO ----  Al agregar un producto al carrito que aparezca un mensaje pero se mantenga en la misma pagina
+LISTO ---- Modificar el authenticate form para mejorar el login
+LISTO ---- Validar el formulario de venta:
+        LISTO ---- Que haya por lo menos un producto agregado
+        LISTO ---- Validar que haya la cantidad disponible de productos
+LISTO ---- Crear una nueva publicacion, unicamente para usuarios que son staff.
+LISTO ---- Editar publicación, unicamente para los usuarios dueños de la publicación
+
+
+7. Revisar todas las posibles actividades para is staff... y todos los permisos en general
+

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}Actualizar el perfil{% endblock title %}
+
+
+{% block content %}
+<br>
+<div class="container col-md-7 border border-info rounded">
+    <div class="row p-1 pt-3">
+        <div class="col-md-9">
+            <div class="fs-3"> Edición de Usuarios</div>
+        </div>
+        <div class="col-md-3">
+            <div class="row pe-2">
+                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Borrar mi cuenta
+                  </button>
+            </div>
+            
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Estas seguro que deseas eliminar tu cuenta?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Una vez elimines tu cuenta no podras recuperar los cambios...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                      <form action="{% url 'home_app:eliminarcuenta' %}" method="post"> {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"> Borrar cuenta </button>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+        </div>
+        
+    </div>
+    <div class="row p-1 mb-3">
+        {{ profile_form.media }}
+        <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+            
+            <div class="form-group row g-1">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre</label>{{form.first_name}}
+
+                </div>
+                <div class="col-md-6">
+
+                    <label class="form-label">Apellido</label>{{form.last_name}}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>{{form.email}}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Foto</label>{{profile_form.foto}}
+                </div>
+                {% if user.is_staff %}
+                <div class="col-md-6"><label class="form-label">Cargo</label>{{profile_form.cargo}}</div>
+                <div class="col-md-6"><label class="form-label">Departamento</label>{{profile_form.departamento}}</div>
+                <div class="col-md-12"><label class="form-label">Linkedin</label>{{profile_form.linkedin}}</div>
+                  
+                {% endif %}
+
+                <div class="col-md-12">
+                    <label class="form-label">Breve biografía</label>
+                    {{profile_form.bio}}
+                </div>
+                <button type="submit" class="btn btn-outline-primary" >Actualizar</button>
+            </div>
+        
+        </form>
+
+    </div>
+    
+</div>
+
+
+{% endblock content %}
