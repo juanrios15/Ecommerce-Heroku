@@ -12,24 +12,21 @@ ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-DATABASES['default']['NAME'] = ""
-DATABASES['default']['USER'] = ""
-DATABASES['default']['PASSWORD'] = ""
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "dbecommerce",
-#         'USER': "juanrios",
-#         'PASSWORD': "z3r4tul89",
-#         'HOST': 'localhost',
-#         'PORT': '5432'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "dbecommerce",
+        'USER': "juanrios",
+        'PASSWORD': "z3r4tul89",
+        'HOST': 'localhost',
+        'PORT': '5432'
         
-#     }
-# }
+    }
+}
+
+db_config = dj_database_url.config()
+if db_config:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Static files (CSS, JavaScript, Images)
