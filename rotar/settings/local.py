@@ -16,11 +16,7 @@ ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
-}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Static files (CSS, JavaScript, Images)
