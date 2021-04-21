@@ -2,22 +2,34 @@ import dj_database_url
 from .base import *
 import os
 import psycopg2
-from decouple import config
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 
-# DATABASE_URL = os.environ['DATABASE_URL']
-
-# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+DATABASES['default']['NAME'] = "dbecommerce"
+DATABASES['default']['USER'] = "juanrios"
+DATABASES['default']['PASSWORD'] = "z3r4tul89"
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "dbecommerce",
+#         'USER': "juanrios",
+#         'PASSWORD': "z3r4tul89",
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+        
+#     }
+# }
 
 
 # Static files (CSS, JavaScript, Images)
