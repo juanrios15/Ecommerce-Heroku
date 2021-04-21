@@ -11,17 +11,17 @@ ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': "dbecommerce",
-#         'USER': "juanrios",
-#         'PASSWORD': "z3r4tul89",
-#         'HOST': 'localhost',
-#         'PORT': '5432'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "dbecommerce",
+        'USER': "juanrios",
+        'PASSWORD': "z3r4tul89",
+        'HOST': 'localhost',
+        'PORT': '5432'
         
-#     }
-# }
+    }
+}
 
 
 # Static files (CSS, JavaScript, Images)

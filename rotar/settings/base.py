@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import django_heroku
 from django.core.exceptions import ImproperlyConfigured
 import json
 import os
@@ -159,3 +159,7 @@ CKEDITOR_CONFIGS = {
 
 
 LOGIN_REDIRECT_URL = '/'
+
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
