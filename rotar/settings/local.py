@@ -9,9 +9,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 
-DATABASE_URL = os.environ['DATABASE_URL']
+# DATABASE_URL = os.environ['DATABASE_URL']
 
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
