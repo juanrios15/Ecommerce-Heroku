@@ -1,1 +1,1 @@
-web: gunicorn Rotar/rotar.wsgi
+web: gunicorn rotar.wsgi
