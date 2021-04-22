@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
-SECRET_KEY = "rlza1x(ep1lu$31^el24n-j@@xlg2y%9k&*0a!^4pddgzvwy9d"
+SECRET_KEY = os.environ('SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

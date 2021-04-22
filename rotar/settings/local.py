@@ -7,7 +7,7 @@ import psycopg2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Database
@@ -15,12 +15,7 @@ ALLOWED_HOSTS = ['morning-savannah-31438.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "dbecommerce",
-        'USER': "juanrios",
-        'PASSWORD': "z3r4tul89",
-        'HOST': 'localhost',
-        'PORT': '5432'
-        
+        'NAME': "dbecommerce",        
     }
 }
 
@@ -47,6 +42,6 @@ MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER =  "juankrios15@gmail.com"
-EMAIL_HOST_PASSWORD = "z3r4tul89"
+EMAIL_HOST_USER =  os.environ('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ('EMAIL_PASSWORD')
 
