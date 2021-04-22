@@ -1,2 +1,4 @@
 # rotar-ecommerce
 
+Mismo proyecto de ecommerce pero subido a HEROKU.
+Aun no se han configurado los archivos media por medio de S3(Amazon), por lo que no es posible visualizar las imagenes que se guardan en media_url de django...
